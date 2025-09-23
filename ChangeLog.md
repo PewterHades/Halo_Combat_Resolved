@@ -5,7 +5,6 @@ All noteable changes to this project will be documented in this file
 ## Unreleased
 - Features dealing with saving preset weapons or enemies for quickloading the stats 
 - More optimzations, mainly in variable names and some of the logic in the behind the scenes files
-- License file
 
 
 ## [1.0.0] 9/12/25
@@ -65,9 +64,11 @@ All noteable changes to this project will be documented in this file
 - Change Log file
 - README file
 - License file
+- Imported Everything to GitHub
 
 ### Changes
 - Now only shoots the lowest value between the expected shots and rounds left in the weapon
 
 ### Fixes
+
 
