@@ -32,7 +32,7 @@ class Main_Page(Frame):
             R_canvases[choice].grid(row = 0, column = 0, columnspan = 3)
 
 
-        Title = Label(self, text = "Halo Combat Program", font = self.theme.Title_Font_Size).grid(row = 0, column = 1,pady = self.theme.Title_PadY_Size)
+        Title = Label(self, text = "Halo Combat Resolved", font = self.theme.Title_Font_Size).grid(row = 0, column = 1,pady = self.theme.Title_PadY_Size)
 
         Left_label = Label(self, text = "Your Stats", font = self.theme.SubTitle_Font_Size).grid(row = 1, column = 0, pady = self.theme.SubTitle_PadY_Size)
 
@@ -254,7 +254,7 @@ class Main_Page(Frame):
 
 
 root = Tk()
-root.wm_title("Halo Combat Program")
+root.wm_title("Halo Combat Resolved")
 root.geometry("1000x600")
 
 page_container = Frame(root)

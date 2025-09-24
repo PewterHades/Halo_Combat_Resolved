@@ -4,7 +4,6 @@ All noteable changes to this project will be documented in this file
 
 ## Unreleased
 - Features dealing with saving preset weapons or enemies for quickloading the stats (This will take a while becasue it has to deal with incoperation into my larger project)
-- Rebuilding the pyinstaller and porting to itch for an easier install requireing less technical knowledge
 
 ## [1.0.0] 9/12/25
 
@@ -63,11 +62,14 @@ All noteable changes to this project will be documented in this file
 - Change Log file
 - README file
 - License file
-- Imported Everything to GitHub
+- Imported everything to GitHub
+- Imported everything to itch.io
 - More optimzations, mainly behind the scenes files logic
 
 ### Changes
 - Now only shoots the lowest value between the expected shots and rounds left in the weapon
+- Changed project name from 'Halo Combat Program' to 'Halo: Combat Resolved'
+- Rebuilt the .exe with current changes
 
 ### Fixes
 

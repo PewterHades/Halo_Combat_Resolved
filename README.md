@@ -1,4 +1,4 @@
-# Halo Combat Program
+# Halo Combat Resolved
 
 This program was made to make combat in the "Halo Mythic" TTRPG more streamlined.
 
@@ -10,8 +10,21 @@ This program was made to make combat in the "Halo Mythic" TTRPG more streamlined
 - Has different variables if you are attacking an enemy, an enemie's shields, or a vehicle
 - Follows the rules from the Mythic 7.0 Rules book
 
-## Instillation
+## Installation
+This project is distributed as a .exe file and a zip file containing all of the code for the purpose of being open source. bundling all required dependencies (`os`, `ctypes`, `tkinter`). No Python installation is needed.
 
+### Steps to intsall and run
+#### From itch.io
+- 1) Head to [Halo_Combat_Resolved](https://PewterHades.itch.io/Halo_Combat_Resolved) or search for "Halo Combat Resolved" on itch.io
+- 2) Scroll down and and click on **Download**
+- 3) unzip the file 'Halo_Combat_Resolved.zip'
+- 4) Double-click 'Halo_Combat_Resolved.exe' to launch the program
+
+
+#### From Github
+- 1) Go to the [Realeases](https://github.com/PewterHades/Halo_Combat_Resolved/releases) section of this repository
+- 2) Download the latest 'Halo_Combat_Resolved.exe'
+- 3) Double-click 'Halo_Combat_Resolved.exe' to launch the program
 
 
 ## Disclaimer
