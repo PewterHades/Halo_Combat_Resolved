@@ -68,44 +68,30 @@ class Main_Page(Frame):
         R_Stat_L = Label(Ranged_Canvas, text = "Ranged Warfare", font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
         R_Stat_E = Entry(Ranged_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_Stat_E.grid(row = 3, column = 1, pady = self.theme.Text_PadY_Size)
-        R_Stat_E.bind("<FocusIn>", self.on_focus_in)
-        R_Stat_E.bind("<FocusOut>", self.on_focus_out)
 
         R_Shot_L = Label(Ranged_Canvas, text = "Number of Shots", font = self.theme.Text_Font_Size).grid(row = 4, column = 0, pady = self.theme.Text_PadY_Size)
         R_Shot_E = Entry(Ranged_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_Shot_E.grid(row = 4, column = 1, pady = self.theme.Text_PadY_Size)
-        R_Shot_E.bind("<FocusIn>", self.on_focus_in)
-        R_Shot_E.bind("<FocusOut>", self.on_focus_out)
 
         R_Num_L = Label(Ranged_Canvas, text = "Number of Dice", font = self.theme.Text_Font_Size).grid(row = 5, column = 0, pady = self.theme.Text_PadY_Size)
         R_Num_E = Entry(Ranged_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_Num_E.grid(row = 5, column = 1, pady = self.theme.Text_PadY_Size)
-        R_Num_E.bind("<FocusIn>", self.on_focus_in)
-        R_Num_E.bind("<FocusOut>", self.on_focus_out)
 
         R_Size_L = Label(Ranged_Canvas, text = "Size of Dice", font = self.theme.Text_Font_Size).grid(row = 6, column = 0, pady = self.theme.Text_PadY_Size)
         R_Size_E = Entry(Ranged_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_Size_E.grid(row = 6, column = 1, pady = self.theme.Text_PadY_Size)
-        R_Size_E.bind("<FocusIn>", self.on_focus_in)
-        R_Size_E.bind("<FocusOut>", self.on_focus_out)
 
         R_AddD_L = Label(Ranged_Canvas, text = "Added Damage", font = self.theme.Text_Font_Size).grid(row = 7, column = 0, pady = self.theme.Text_PadY_Size)
         R_AddD_E = Entry(Ranged_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_AddD_E.grid(row = 7, column = 1, pady = self.theme.Text_PadY_Size)
-        R_AddD_E.bind("<FocusIn>", self.on_focus_in)
-        R_AddD_E.bind("<FocusOut>", self.on_focus_out)
 
         R_Pierce_L = Label(Ranged_Canvas, text = "Pierce", font = self.theme.Text_Font_Size).grid(row = 8, column = 0, pady = self.theme.Text_PadY_Size)
         R_Pierce_E = Entry(Ranged_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_Pierce_E.grid(row = 8, column = 1, pady = self.theme.Text_PadY_Size)
-        R_Pierce_E.bind("<FocusIn>", self.on_focus_in)
-        R_Pierce_E.bind("<FocusOut>", self.on_focus_out)
 
         R_Rounds_L = Label(Ranged_Canvas, text = "Rounds in Weapon", font = self.theme.Text_Font_Size).grid(row = 9, column = 0, pady = self.theme.Text_PadY_Size)
         R_Rounds_E = Entry(Ranged_Canvas, textvariable = self.Rounds, validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         R_Rounds_E.grid(row = 9, column = 1, pady = self.theme.Text_PadY_Size)
-        R_Rounds_E.bind("<FocusIn>", self.on_focus_in)
-        R_Rounds_E.bind("<FocusOut>", self.on_focus_out)
 
 
         Melee_Canvas = Frame(Left_canvas_Frame)
@@ -117,39 +103,26 @@ class Main_Page(Frame):
 
         M_Stat_L = Label(Melee_Canvas, text = "Melee Warfare", font = self.theme.Text_Font_Size).grid(row = 2, column = 0, pady = self.theme.Text_PadY_Size)
         M_Stat_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
-        M_Stat_E.grid(row = 2, column = 1, pady = self.theme.Text_PadY_Size)
-        M_Stat_E.bind("<FocusIn>", self.on_focus_in)
-        M_Stat_E.bind("<FocusOut>", self.on_focus_out)  
+        M_Stat_E.grid(row = 2, column = 1, pady = self.theme.Text_PadY_Size) 
 
         M_Strikes_L = Label(Melee_Canvas, text = "Melee Strikes", font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
         M_Strikes_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         M_Strikes_E.grid(row = 3, column = 1, pady = self.theme.Text_PadY_Size)
-        M_Strikes_E.bind("<FocusIn>", self.on_focus_in)
-        M_Strikes_E.bind("<FocusOut>", self.on_focus_out)  
-
         M_Num_L = Label(Melee_Canvas, text = "Number of Dice", font = self.theme.Text_Font_Size).grid(row = 4, column = 0, pady = self.theme.Text_PadY_Size)
         M_Num_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         M_Num_E.grid(row = 4, column = 1, pady = self.theme.Text_PadY_Size)
-        M_Num_E.bind("<FocusIn>", self.on_focus_in)
-        M_Num_E.bind("<FocusOut>", self.on_focus_out)
 
         M_Size_L = Label(Melee_Canvas, text = "Size of Dice", font = self.theme.Text_Font_Size).grid(row = 5, column = 0, pady = self.theme.Text_PadY_Size)
         M_Size_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         M_Size_E.grid(row = 5, column = 1, pady = self.theme.Text_PadY_Size)
-        M_Size_E.bind("<FocusIn>", self.on_focus_in)
-        M_Size_E.bind("<FocusOut>", self.on_focus_out)
 
         M_AddD_L = Label(Melee_Canvas, text = "Added Damage", font = self.theme.Text_Font_Size).grid(row = 6, column = 0, pady = self.theme.Text_PadY_Size)
         M_AddD_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         M_AddD_E.grid(row = 6, column = 1, pady = self.theme.Text_PadY_Size)
-        M_AddD_E.bind("<FocusIn>", self.on_focus_in)
-        M_AddD_E.bind("<FocusOut>", self.on_focus_out)
 
         M_Pierce_L = Label(Melee_Canvas, text = "Pierce", font = self.theme.Text_Font_Size).grid(row = 7, column = 0, pady = self.theme.Text_PadY_Size)
         M_Pierce_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
-        M_Pierce_E.grid(row = 7, column = 1, pady = self.theme.Text_PadY_Size)        
-        M_Pierce_E.bind("<FocusIn>", self.on_focus_in)
-        M_Pierce_E.bind("<FocusOut>", self.on_focus_out)
+        M_Pierce_E.grid(row = 7, column = 1, pady = self.theme.Text_PadY_Size)
 
         L_canvases = {"ranged": Ranged_Canvas,"melee": Melee_Canvas}
 
@@ -177,44 +150,30 @@ class Main_Page(Frame):
         E_A_Head_L = Label(Enemy_Canvas, text = "Head Armor", font = self.theme.Text_Font_Size).grid(row = 0, column = 0, pady = self.theme.Text_PadY_Size)
         E_A_Head_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_A_Head_E.grid(row = 0, column = 1, pady = self.theme.Text_PadY_Size)
-        E_A_Head_E.bind("<FocusIn>", self.on_focus_in)
-        E_A_Head_E.bind("<FocusOut>", self.on_focus_out)
 
         E_A_Arm_L = Label(Enemy_Canvas, text = "Arm Armor", font = self.theme.Text_Font_Size).grid(row = 1, column = 0, pady = self.theme.Text_PadY_Size)
         E_A_Arm_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_A_Arm_E.grid(row = 1, column = 1, pady = self.theme.Text_PadY_Size)
-        E_A_Arm_E.bind("<FocusIn>", self.on_focus_in)
-        E_A_Arm_E.bind("<FocusOut>", self.on_focus_out)
 
         E_A_Chest_L = Label(Enemy_Canvas, text = "Chest Armor", font = self.theme.Text_Font_Size).grid(row = 2, column = 0, pady = self.theme.Text_PadY_Size)
         E_A_Chest_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_A_Chest_E.grid(row = 2, column = 1, pady = self.theme.Text_PadY_Size)
-        E_A_Chest_E.bind("<FocusIn>", self.on_focus_in)
-        E_A_Chest_E.bind("<FocusOut>", self.on_focus_out)
 
         E_A_Leg_L = Label(Enemy_Canvas, text = "Leg Armor", font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
         E_A_Leg_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_A_Leg_E.grid(row = 3, column = 1, pady = self.theme.Text_PadY_Size)
-        E_A_Leg_E.bind("<FocusIn>", self.on_focus_in)
-        E_A_Leg_E.bind("<FocusOut>", self.on_focus_out)
 
         E_Stat_L = Label(Enemy_Canvas, text = "Agility", font = self.theme.Text_Font_Size).grid(row = 4, column = 0, pady = self.theme.Text_PadY_Size)
         E_Agility_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_Agility_E.grid(row = 4, column = 1, pady = self.theme.Text_PadY_Size)
-        E_Agility_E.bind("<FocusIn>", self.on_focus_in)
-        E_Agility_E.bind("<FocusOut>", self.on_focus_out)
 
         E_Debuff_L = Label(Enemy_Canvas, text = "Debuff Invulrability Charges", font = self.theme.Text_Font_Size).grid(row = 5, column = 0, pady = self.theme.Text_PadY_Size)
         E_A_Debuff_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_A_Debuff_E.grid(row = 5, column = 1, pady = self.theme.Text_PadY_Size)
-        E_A_Debuff_E.bind("<FocusIn>", self.on_focus_in)
-        E_A_Debuff_E.bind("<FocusOut>", self.on_focus_out)
 
         E_Toughness_L = Label(Enemy_Canvas, text = "Toughness Modifier", font = self.theme.Text_Font_Size).grid(row = 6, column = 0, pady = self.theme.Text_PadY_Size)
         E_Toughness_E = Entry(Enemy_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         E_Toughness_E.grid(row = 6, column = 1, pady = self.theme.Text_PadY_Size)
-        E_Toughness_E.bind("<FocusIn>", self.on_focus_in)
-        E_Toughness_E.bind("<FocusOut>", self.on_focus_out)
 
 
         Shield_Canvas = Frame(Right_canvas_Frame)
@@ -222,14 +181,10 @@ class Main_Page(Frame):
         S_Stat_L = Label(Shield_Canvas, text = "Agility", font = self.theme.Text_Font_Size).grid(row = 0, column = 0, pady = self.theme.Text_PadY_Size)
         S_Agility_E = Entry(Shield_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         S_Agility_E.grid(row = 0, column = 1, pady = self.theme.Text_PadY_Size)
-        S_Agility_E.bind("<FocusIn>", self.on_focus_in)
-        S_Agility_E.bind("<FocusOut>", self.on_focus_out)
 
         S_Debuff_L = Label(Shield_Canvas, text = "Debuff Invulrability Charges", font = self.theme.Text_Font_Size).grid(row = 1, column = 0, pady = self.theme.Text_PadY_Size)
         S_A_Debuff_E = Entry(Shield_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         S_A_Debuff_E.grid(row = 1, column = 1, pady = self.theme.Text_PadY_Size)
-        S_A_Debuff_E.bind("<FocusIn>", self.on_focus_in)
-        S_A_Debuff_E.bind("<FocusOut>", self.on_focus_out)
 
 
         Vehicle_Canvas = Frame(Right_canvas_Frame)
@@ -237,33 +192,26 @@ class Main_Page(Frame):
         V_Armor_L = Label(Vehicle_Canvas, text = "Armor", font = self.theme.Text_Font_Size).grid(row = 0, column = 0, pady = self.theme.Text_PadY_Size)
         V_Armor_E = Entry(Vehicle_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         V_Armor_E.grid(row = 0, column = 1, pady = self.theme.Text_PadY_Size)
-        V_Armor_E.bind("<FocusIn>", self.on_focus_in)
-        V_Armor_E.bind("<FocusOut>", self.on_focus_out)
 
         V_Stat_L = Label(Vehicle_Canvas, text = "Manuverability", font = self.theme.Text_Font_Size).grid(row = 1, column = 0, pady = self.theme.Text_PadY_Size)
         V_Agility_E = Entry(Vehicle_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         V_Agility_E.grid(row = 1, column = 1, pady = self.theme.Text_PadY_Size)
-        V_Agility_E.bind("<FocusIn>", self.on_focus_in)
-        V_Agility_E.bind("<FocusOut>", self.on_focus_out)
 
         V_Debuff_L = Label(Vehicle_Canvas, text = "Debuff Invulrability Charges", font = self.theme.Text_Font_Size).grid(row = 2, column = 0, pady = self.theme.Text_PadY_Size)
         V_A_Debuff_E = Entry(Vehicle_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         V_A_Debuff_E.grid(row = 2, column = 1, pady = self.theme.Text_PadY_Size)
-        V_A_Debuff_E.bind("<FocusIn>", self.on_focus_in)
-        V_A_Debuff_E.bind("<FocusOut>", self.on_focus_out)
 
         V_Toughness_L = Label(Vehicle_Canvas, text = "Toughness Modifier", font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
         V_Toughness_E = Entry(Vehicle_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         V_Toughness_E.grid(row = 3, column = 1, pady = self.theme.Text_PadY_Size)
-        V_Toughness_E.bind("<FocusIn>", self.on_focus_in)
-        V_Toughness_E.bind("<FocusOut>", self.on_focus_out)
 
         R_canvases = {"enemy": Enemy_Canvas,"shield": Shield_Canvas,"vehicle": Vehicle_Canvas}
 
 
         Swap_Left_Canvas()
         Swap_Right_Canvas()
-        self.theme.toggle_dark_mode()
+        self.all_entry_focus(self)
+        self.theme.change_theme()
         
         Calculate_B = Button(self, text = "Calculate", command = lambda:[
             calulate(str(Attack_Type.get()), str(Enemy_Type.get()), str(Fire_Mode.get()), str(Melee_Mode.get()),
@@ -276,7 +224,7 @@ class Main_Page(Frame):
             int(E_Toughness_E.get()), int(V_Toughness_E.get()), 
             self.theme.Dark_Mode), self.spend_ronds(int(R_Shot_E.get()))], font = self.theme.Text_Font_Size).grid(row = 3, column = 1, pady = self.theme.Text_PadY_Size)
         
-        Dark_Mode_B = Button(self, text = "Dark mode toggle", command = self.theme.toggle_dark_mode, font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
+        Dark_Mode_B = Button(self, text = "Dark mode toggle", command = lambda: self.theme.change_theme(toggle = True), font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
 
         Instructions_B = Button(self, text = "Instructions", command = lambda: instructions(self.theme.Dark_Mode), font = self.theme.Text_Font_Size).grid(row = 3, column = 2, pady = self.theme.Text_PadY_Size)
 
@@ -290,6 +238,20 @@ class Main_Page(Frame):
     def on_focus_out(self, event):
         if event.widget.get().strip() == "":
             event.widget.insert(0, "0")
+
+    def on_focus(self, entry):
+        entry.bind("<FocusIn>", self.on_focus_in)
+        entry.bind("<FocusOut>", self.on_focus_out)  
+
+    def all_entry_focus(self, widget):
+        for child in widget.winfo_children():
+            if isinstance(child, Entry):
+                self.on_focus(child)
+
+            if child.winfo_children():
+                self.all_entry_focus(child)
+
+
 
 root = Tk()
 root.wm_title("Halo Combat Program")

@@ -10,6 +10,7 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
     output = Toplevel()
     output.wm_title("Output")
     output.geometry("800x400")
+    run_cacl = True
 
     OP_Frame = Frame(output)
     OP_Frame.grid(row=0, column=0, sticky="nsew")
@@ -88,7 +89,8 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
                     Total_Damage.set(sum(o[2] for o in outcome))
 
         else:
-            messagebox.showerror(title = "No Ammo", detail = "Reloead required, there are no more rounds in your weapon.")
+            run_cacl = False
+
 
     elif Atk_var == "melee":
         if Melee_Mode == "burst":
@@ -160,7 +162,13 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
         result_label = Label(OP_Frame, textvariable=result_var, font = theme.Text_Font_Size).grid(
             row = index, column = 6, pady = theme.Text_PadY_Size)  
 
-    theme.change_theme(OP_Frame)
+    theme.change_theme()
+
+    if not run_cacl:
+        for widget in output.winfo_children():    
+            widget.destroy()
+        output.destroy()
+        messagebox.showerror(title = "No Ammo", detail = "Reloead required, there are no more rounds in your weapon.")
 
 def avoid_damage(Agility, DegreeOfSuccess, Debuff_Immunity, Damage, Total_Damage):
     roll = percentile_roll()
@@ -849,4 +857,4 @@ def instructions(dark_mode):
     V_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the vehicles toughness modifier",
         font = Text_Small, wraplength = 800, justify = "left").grid(row = 17, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
 
-    theme.change_theme(IN_Frame)
+    theme.change_theme()

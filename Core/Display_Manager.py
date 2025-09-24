@@ -6,16 +6,10 @@ from tkinter.font import Font
 class ThemeManager:
     def __init__(self, root):
         self.root = root
-        self.Dark_Mode = True
-
+        self.Dark_Mode = False
         self.last_width = None
         self.last_height = None
         self.after_id = None
-
-        self.Base_Dir = dirname(dirname(__file__))
-        Fr_PRIVATE = 0x10
-        font_path = join(self.Base_Dir, "Fonts", "Halo.ttf")
-        windll.gdi32.AddFontResourceExW(font_path, Fr_PRIVATE, 0)
 
         self.Title_Font_Size = Font(root = root, family='Halo', size=30)
         self.Title_PadY_Size = 20
@@ -23,10 +17,17 @@ class ThemeManager:
         self.SubTitle_PadY_Size = 10
         self.Text_Font_Size = Font(root = root, family='Arial', size=10)
         self.Text_PadY_Size = 2
-
         self.scaled_sets = []
-
         root.bind("<Configure>", self.on_resize)
+
+        self.Base_Dir = dirname(dirname(__file__))
+        Fr_PRIVATE = 0x10
+        font_path = join(self.Base_Dir, "Fonts", "Halo.ttf")
+        windll.gdi32.AddFontResourceExW(font_path, Fr_PRIVATE, 0)
+
+        self.modes ={
+            "Light": {"bg": '#FFFFFF', "fg": '#000000', "entry_bg": '#FFFFFF'},
+            "Dark":{"bg": '#333333', "fg": '#FFFFFF', "entry_bg": '#333333'}}
 
     def get_all_children(self, widget):
         children = widget.winfo_children()
@@ -92,27 +93,18 @@ class ThemeManager:
 
         return title, subtitle, text
 
-    def toggle_dm(self):
-        self.Dark_Mode = not self.Dark_Mode
+    def change_theme(self, toggle = False):
+        if toggle:
+            self.Dark_Mode = not self.Dark_Mode
+        theme = self.modes["Dark" if self.Dark_Mode else "Light"]
 
-    def change_theme(self, widget):
-        modes ={
-            "Light": {"bg": '#FFFFFF', "fg": '#000000', "entry_bg": '#FFFFFF'},
-            "Dark":{"bg": '#333333', "fg": '#FFFFFF', "entry_bg": '#333333'}}
-
-        dm = "Dark" if self.Dark_Mode else "Light"
-        theme = modes[dm]
-
-
-        widget.config(bg=theme["bg"])
-        for child in widget.winfo_children():
-            if isinstance(child, (Label, Button, Radiobutton)):
-                child.config(bg=theme["bg"], fg=theme["fg"])
-            elif isinstance(child, Entry):
-                child.config(bg=theme["entry_bg"], fg=theme["fg"])
-            if child.winfo_children():
-                self.change_theme(child)
-
-    def toggle_dark_mode(self):
-        self.toggle_dm()
-        self.change_theme(self.root)        
+        def theme_recursion(widget, theme):
+            widget.config(bg=theme["bg"])
+            for child in widget.winfo_children():
+                if isinstance(child, (Label, Button, Radiobutton)):
+                    child.config(bg=theme["bg"], fg=theme["fg"])
+                elif isinstance(child, Entry):
+                    child.config(bg=theme["entry_bg"], fg=theme["fg"])
+                if child.winfo_children():
+                    theme_recursion(child, theme)
+        theme_recursion(self.root, theme)
