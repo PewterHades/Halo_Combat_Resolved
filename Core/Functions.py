@@ -130,12 +130,10 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
 
 
     Agility_Var = StringVar(value = f"Agility: {Agility.get()}")
-    Agility_Label = Label(OP_Frame, textvariable = Agility_Var, font = theme.Text_Font_Size).grid(row=0,
-        column=0, pady = theme.Text_PadY_Size)
+    Agility_Label = Label(OP_Frame, textvariable = Agility_Var, font = theme.Text_Font_Size).grid(row=0, column=0, pady = theme.Text_PadY_Size)
 
     Total_Damage_Var = StringVar(value = f"Total Damage: {Total_Damage.get()}")
-    Total_Damage_Label = Label(OP_Frame, textvariable = Total_Damage_Var, font = theme.Text_Font_Size).grid(row = 0,
-        column = 1, pady = theme.Text_PadY_Size)
+    Total_Damage_Label = Label(OP_Frame, textvariable = Total_Damage_Var, font = theme.Text_Font_Size).grid(row = 0, column = 1, pady = theme.Text_PadY_Size)
 
     for i, stat in enumerate(outcome):
         index = i + 1
@@ -147,8 +145,7 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
 
         Damage_lable = Label(OP_Frame, text = f"You dealt {stat[2]} damage", font = theme.Text_Font_Size).grid(row = index, column = 3, pady = theme.Text_PadY_Size)
 
-        Debuff_lable = Label(OP_Frame, text = f"Debuffs: {stat[4]}", font = theme.Text_Font_Size,
-            wraplength = 150, justify = "left").grid(row = index, column = 4, pady = theme.Text_PadY_Size, sticky = "w")
+        Debuff_lable = Label(OP_Frame, text = f"Debuffs: {stat[4]}", font = theme.Text_Font_Size, wraplength = theme.Text_WrapLength * 2, justify = "left").grid(row = index, column = 4, pady = theme.Text_PadY_Size, sticky = "w")
 
         result_var = StringVar(value="")
         Avoid_button = Button(OP_Frame, text = "Evade / Parry", font = theme.Text_Font_Size)
@@ -159,8 +156,7 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
             Total_Damage_Var.set(value = f"Total Damage: {Total_Damage.get()}"), b.config(state = "disabled")))
 
 
-        result_label = Label(OP_Frame, textvariable=result_var, font = theme.Text_Font_Size).grid(
-            row = index, column = 6, pady = theme.Text_PadY_Size)  
+        result_label = Label(OP_Frame, textvariable=result_var, font = theme.Text_Font_Size, wraplength = theme.Text_WrapLength * 2).grid(row = index, column = 6, pady = theme.Text_PadY_Size)  
 
     theme.change_theme()
 
@@ -733,128 +729,93 @@ def instructions(dark_mode):
     IN_Frame.grid(row=0, column=0, sticky="nsew")
     instruct.rowconfigure(0, weight=1)
     instruct.columnconfigure(0, weight=1)
+    instruct.columnconfigure(1, weight=1)
+    instruct.columnconfigure(2, weight=1)
 
     theme = ThemeManager(IN_Frame)
     theme.Dark_Mode = dark_mode
-    Title_Small, SubTitle_Small, Text_Small = theme.make_scaled_fonts(scale=0.75)
+    Title_Small, SubTitle_Small, Text_Small = theme.make_scaled_fonts(scale=0.8)
+    Wrap_Scalar = 6
 
 
-
-    Instruct_L = Label(IN_Frame, text = "Instructions", font = Title_Small).grid(row = 0,
-        column = 1, pady = theme.Title_PadY_Size)
+    Instruct_L = Label(IN_Frame, text = "Instructions", font = Title_Small).grid(row = 0, column = 0, columnspan = 3, pady = theme.Title_PadY_Size, sticky = "")
 
 
-
-    Your_L = Label(IN_Frame, text = "Your Stats", font = Title_Small).grid(row = 1,
-        column = 0, pady = theme.Title_PadY_Size)
+    Your_L = Label(IN_Frame, text = "Your Stats", font = Title_Small).grid(row = 1, column = 0, pady = theme.Title_PadY_Size)
 
 
-    Range_L = Label(IN_Frame, text = "Ranged", font = SubTitle_Small).grid(row = 2,
-        column = 0, pady = theme.SubTitle_PadY_Size)
+    Range_L = Label(IN_Frame, text = "Ranged", font = SubTitle_Small).grid(row = 2, column = 0, pady = theme.SubTitle_PadY_Size)
 
 
-    R_Fire_L = Label(IN_Frame, text = "Auto Fire, Burst Fire, Semi Auto Fire: Choose what fire type you intend to use",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 3, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_Fire_L = Label(IN_Frame, text = "Auto Fire, Burst Fire, Semi Auto Fire: Choose what fire type you intend to use", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 3, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    R_Warfare_L = Label(IN_Frame, text = "Ranged Warfare: Insert your ranged warframe stat without the buff from the fire type",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 4, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_Warfare_L = Label(IN_Frame, text = "Ranged Warfare: Insert your ranged warframe stat without the buff from the fire type", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 4, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    R_Shot_Num_L = Label(IN_Frame, text = "Number of Shots: Insert the number of shots you weapon will fire for the respective fire type",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 5, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_Shot_Num_L = Label(IN_Frame, text = "Number of Shots: Insert the number of shots you weapon will fire for the respective fire type", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 5, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    R_Dice_Num_L = Label(IN_Frame, text = "Number of Dice: Insert the number of damage dice for one shot",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 6, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_Dice_Num_L = Label(IN_Frame, text = "Number of Dice: Insert the number of damage dice for one shot", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 6, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    R_Dice_Size_L = Label(IN_Frame, text = "Size of Dice: Insert the number of sides for you damage dice",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 7, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_Dice_Size_L = Label(IN_Frame, text = "Size of Dice: Insert the number of sides for you damage dice", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 7, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    R_AddD_L = Label(IN_Frame, text = "Added Damage: Insert the flat damage increase for one shot",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 8, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_AddD_L = Label(IN_Frame, text = "Added Damage: Insert the flat damage increase for one shot", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 8, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    R_Pierce_L = Label(IN_Frame, text = "Pierce: Insert the pierce value for the gun",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 9, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    R_Pierce_L = Label(IN_Frame, text = "Pierce: Insert the pierce value for the gun", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 9, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
     
-    R_Rounds_L = Label(IN_Frame, text = "Rounds in Weapon: Insert the number of rounds in you gun, this will go down as you shoot and will not let you shoot if it is at zero",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 10, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
-
-    Melee_L = Label(IN_Frame, text = "Melee", font = SubTitle_Small).grid(row = 11,
-        column = 0, pady = theme.SubTitle_PadY_Size)
+    R_Rounds_L = Label(IN_Frame, text = "Rounds in Weapon: Insert the number of rounds in you gun, this will go down as you shoot and will not let you shoot if it is at zero", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 10, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
 
-    M_Strike_L = Label(IN_Frame, text = "Single Strike, Burst Strike: Choose what Strike type you intend to use",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 12, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    Melee_L = Label(IN_Frame, text = "Melee", font = SubTitle_Small).grid(row = 11, column = 0, pady = theme.SubTitle_PadY_Size)
 
-    M_Warfare_L = Label(IN_Frame, text = "Melee Warfare: Insert your melee warframe stat",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 13, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    M_Strike_L = Label(IN_Frame, text = "Single Strike, Burst Strike: Choose what Strike type you intend to use", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 12, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    M_Count_L = Label(IN_Frame, text = "Melee Strikes: (Only chaneg if on \"Burst Melee\") Inster number of strikes you will make",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 14, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    M_Warfare_L = Label(IN_Frame, text = "Melee Warfare: Insert your melee warframe stat", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 13, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    M_Dice_Num_L = Label(IN_Frame, text = "Number of Dice: Insert the number of damage dice for one melee attack",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 15, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    M_Count_L = Label(IN_Frame, text = "Melee Strikes: (Only chaneg if on \"Burst Melee\") Inster number of strikes you will make", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 14, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    M_Dice_Size_L = Label(IN_Frame, text = "Size of Dice: Insert the number of sides for you damage dice",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 16, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    M_Dice_Num_L = Label(IN_Frame, text = "Number of Dice: Insert the number of damage dice for one melee attack", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 15, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    M_AddD_L = Label(IN_Frame, text = "Added Damage: Insert the flat damage increase for one melee attack",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 17, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    M_Dice_Size_L = Label(IN_Frame, text = "Size of Dice: Insert the number of sides for you damage dice", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 16, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    M_Pierce_L = Label(IN_Frame, text = "Pierce: Insert the pierce value for the gun",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 18, column = 0, pady = theme.Text_PadY_Size, sticky = "w")
+    M_AddD_L = Label(IN_Frame, text = "Added Damage: Insert the flat damage increase for one melee attack", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 17, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
+
+    M_Pierce_L = Label(IN_Frame, text = "Pierce: Insert the pierce value for the gun", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 18, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
 
 
-    Enemy_L = Label(IN_Frame, text = "Enemy Stats", font = Title_Small).grid(row = 1,
-        column = 3, pady = theme.Title_PadY_Size)
+    Enemy_L = Label(IN_Frame, text = "Enemy Stats", font = Title_Small).grid(row = 1, column = 2, pady = theme.Title_PadY_Size)
 
-    Ene_L = Label(IN_Frame, text = "Enemy", font = SubTitle_Small).grid(row = 2,
-        column = 3, pady = theme.SubTitle_PadY_Size)
+    Ene_L = Label(IN_Frame, text = "Enemy", font = SubTitle_Small).grid(row = 2, column = 2, pady = theme.SubTitle_PadY_Size)
 
-    E_Head_L = Label(IN_Frame, text = "Head Armor: Input the armor value for the enemies head",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 3, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Head_L = Label(IN_Frame, text = "Head Armor: Input the armor value for the enemies head", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 3, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    E_Arm_L = Label(IN_Frame, text = "Arm Armor: Input the armor value for the enemies arm",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 4, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Arm_L = Label(IN_Frame, text = "Arm Armor: Input the armor value for the enemies arm", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 4, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    E_Chest_L = Label(IN_Frame, text = "Chest Armor: Input the armor value for the enemies chest",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 5, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Chest_L = Label(IN_Frame, text = "Chest Armor: Input the armor value for the enemies chest", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 5, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    E_Leg_L = Label(IN_Frame, text = "Leg Armor: Input the armor value for the enemies leg",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 6, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Leg_L = Label(IN_Frame, text = "Leg Armor: Input the armor value for the enemies leg", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 6, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    E_Agility_L = Label(IN_Frame, text = "Agility: Input the enemies Agility value",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 7, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Agility_L = Label(IN_Frame, text = "Agility: Input the enemies Agility value", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 7, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    E_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the enemy can negate the Agility debuff from dodging or parrying",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 8, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the enemy can negate the Agility debuff from dodging or parrying", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 8, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
     
-    E_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the enemies toughness modifier",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 9, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    E_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the enemies toughness modifier", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 9, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
 
-    Shield_L = Label(IN_Frame, text = "Shield", font = SubTitle_Small).grid(row = 10,
-        column = 3, pady = theme.SubTitle_PadY_Size)
+    Shield_L = Label(IN_Frame, text = "Shield", font = SubTitle_Small).grid(row = 10, column = 2, pady = theme.SubTitle_PadY_Size)
 
-    S_Agility_L = Label(IN_Frame, text = "Agility: Input the enemies Agility value",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 11, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    S_Agility_L = Label(IN_Frame, text = "Agility: Input the enemies Agility value", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 11, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    S_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the enemy can negate the Agility debuff from dodging or parrying",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 12, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    S_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the enemy can negate the Agility debuff from dodging or parrying", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 12, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
     
 
-    Vehicle_L = Label(IN_Frame, text = "Vehicle", font = SubTitle_Small).grid(row = 13,
-        column = 3, pady = theme.SubTitle_PadY_Size)
+    Vehicle_L = Label(IN_Frame, text = "Vehicle", font = SubTitle_Small).grid(row = 13, column = 2, pady = theme.SubTitle_PadY_Size)
 
-    V_Armor_L = Label(IN_Frame, text = "Armor: Input the armor value for the target area of the vehicle",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 14, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    V_Armor_L = Label(IN_Frame, text = "Armor: Input the armor value for the target area of the vehicle", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 14, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    V_Manuverability_L = Label(IN_Frame, text = "Manuverability: Input the vehicles Manuverability value",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 15, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    V_Manuverability_L = Label(IN_Frame, text = "Manuverability: Input the vehicles Manuverability value", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 15, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    V_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the vehicle can negate the Agility debuff from dodging or parrying",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 16, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    V_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the vehicle can negate the Agility debuff from dodging or parrying", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 16, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
-    V_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the vehicles toughness modifier",
-        font = Text_Small, wraplength = 800, justify = "left").grid(row = 17, column = 3, pady = theme.Text_PadY_Size, sticky = "w")
+    V_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the vehicles toughness modifier", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 17, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
 
     theme.change_theme()

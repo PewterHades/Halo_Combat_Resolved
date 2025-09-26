@@ -5,7 +5,7 @@ a = Analysis(
     ['Interface.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('../Fonts/Halo.ttf', 'Fonts')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

@@ -6,6 +6,8 @@ class Main_Page(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.columnconfigure(0, weight = 1)
+        self.columnconfigure(2, weight = 1)
+        self.columnconfigure(3, weight = 1)
         Attack_Type = StringVar(value = "ranged")
         Enemy_Type = StringVar(value = "enemy")
         Fire_Mode = StringVar(value = "auto")
@@ -32,7 +34,7 @@ class Main_Page(Frame):
             R_canvases[choice].grid(row = 0, column = 0, columnspan = 3)
 
 
-        Title = Label(self, text = "Halo Combat Resolved", font = self.theme.Title_Font_Size).grid(row = 0, column = 1,pady = self.theme.Title_PadY_Size)
+        Title = Label(self, text = "Halo: Combat Resolved", font = self.theme.Title_Font_Size).grid(row = 0, column = 0, columnspan = 3, pady = self.theme.Title_PadY_Size, sticky = "")
 
         Left_label = Label(self, text = "Your Stats", font = self.theme.SubTitle_Font_Size).grid(row = 1, column = 0, pady = self.theme.SubTitle_PadY_Size)
 
@@ -108,6 +110,7 @@ class Main_Page(Frame):
         M_Strikes_L = Label(Melee_Canvas, text = "Melee Strikes", font = self.theme.Text_Font_Size).grid(row = 3, column = 0, pady = self.theme.Text_PadY_Size)
         M_Strikes_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         M_Strikes_E.grid(row = 3, column = 1, pady = self.theme.Text_PadY_Size)
+
         M_Num_L = Label(Melee_Canvas, text = "Number of Dice", font = self.theme.Text_Font_Size).grid(row = 4, column = 0, pady = self.theme.Text_PadY_Size)
         M_Num_E = Entry(Melee_Canvas, textvariable = IntVar(value = 0), validate = "key", validatecommand = vcmd, font = self.theme.Text_Font_Size)
         M_Num_E.grid(row = 4, column = 1, pady = self.theme.Text_PadY_Size)
@@ -254,8 +257,9 @@ class Main_Page(Frame):
 
 
 root = Tk()
-root.wm_title("Halo Combat Resolved")
+root.wm_title("Halo: Combat Resolved")
 root.geometry("1000x600")
+root.bind_all("<Button-1>", lambda event: event.widget.focus_set())
 
 page_container = Frame(root)
 page_container.pack(side = "right", fill = "both", expand = True)

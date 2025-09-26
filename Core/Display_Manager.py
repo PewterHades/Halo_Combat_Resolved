@@ -1,4 +1,5 @@
-from os.path import dirname, join
+import sys
+from os.path import join, abspath
 from ctypes import windll
 from tkinter import Label, Button, Entry, Radiobutton, Frame
 from tkinter.font import Font
@@ -12,17 +13,20 @@ class ThemeManager:
         self.after_id = None
 
         self.Title_Font_Size = Font(root = root, family='Halo', size=30)
+        self.Title_PadX_Size = 10
         self.Title_PadY_Size = 20
         self.SubTitle_Font_Size = Font(root = root, family='Halo', size=20)
         self.SubTitle_PadY_Size = 10
+        self.SubTitle_Padx_Size = 5
         self.Text_Font_Size = Font(root = root, family='Arial', size=10)
+        self.Text_WrapLength = 100
+        self.Text_PadX_Size = 2
         self.Text_PadY_Size = 2
         self.scaled_sets = []
         root.bind("<Configure>", self.on_resize)
 
-        self.Base_Dir = dirname(dirname(__file__))
         Fr_PRIVATE = 0x10
-        font_path = join(self.Base_Dir, "Fonts", "Halo.ttf")
+        font_path = self.resource_path(join("Fonts", "Halo.ttf"))
         windll.gdi32.AddFontResourceExW(font_path, Fr_PRIVATE, 0)
 
         self.modes ={
@@ -66,16 +70,23 @@ class ThemeManager:
         self.last_height = height
 
         new_font_size = max(5, int(width / 100))
+        new_padx_val = max(2, int(width / 200))
+        new_wraplength = max(100, int(width / 5))
         new_pady_val = max(2, int(height / 200))
 
+
         self.Title_Font_Size.configure(size = int(new_font_size * 3))
+        self.Title_PadX_Size = new_padx_val * 4
         self.Title_PadY_Size = new_pady_val * 4
 
         self.SubTitle_Font_Size.configure(size = int(new_font_size * 1.5))
+        self.SubTitle_PadX_Size = new_padx_val * 2
         self.SubTitle_PadY_Size = new_pady_val * 2
 
         self.Text_Font_Size.configure(size = max(8, int(new_font_size)))
+        self.Text_PadX_Size = new_padx_val
         self.Text_PadY_Size = new_pady_val
+        self.Text_WrapLength = new_wraplength
 
         for title, subtitle, text, scale in self.scaled_sets:
             title.configure(size=int(self.Title_Font_Size['size'] * scale))
@@ -108,3 +119,8 @@ class ThemeManager:
                 if child.winfo_children():
                     theme_recursion(child, theme)
         theme_recursion(self.root, theme)
+
+    def resource_path(self, relative_path):
+        if hasattr(sys, '_MEIPASS'):
+            return join(sys._MEIPASS, relative_path)
+        return join(abspath("."), relative_path)
