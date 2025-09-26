@@ -77,7 +77,7 @@ Version number note: Since the previous 1.x version were not public I see them a
 
 ## [1.0.1] 9/26/25
 ### Additions
-- Added some code that pulls the foucs when a button or screen is cliked to fix "None" soemtimes being inputted into the calcukation due to a entry that previously had a zeor in it still being focused on
+- Added some code that pulls the focus when a button or screen is clicked to fix "None" sometimes being inputted into the calculation due to a entry that previously had a zero in it still being focused on
 
 ### Changes
 - Made some design changes to make the layout of pages look better
