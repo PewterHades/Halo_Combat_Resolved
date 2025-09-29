@@ -4,6 +4,8 @@ All noteable changes to this project will be documented in this file
 
 ## Unreleased
 - Features dealing with saving preset weapons or enemies for quickloading their stats (This will take a while becasue it has to deal with incoperation into my larger project)
+- Mac compatability
+- Pump fire mode
 
 ## [1.0.0] 9/12/25
 
@@ -85,3 +87,12 @@ Version number note: Since the previous 1.x version were not public I see them a
 ### Fixes
 - Halo font now works when opening the project through the .exe file
 - Fixed spelling mistakes in various parts of the project
+
+
+## [1.1.0] in progress
+### Additions
+
+### Changes
+
+### Fixes
+- More spelling errors
