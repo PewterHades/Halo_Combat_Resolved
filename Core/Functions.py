@@ -1,15 +1,18 @@
 import random as r
 from tkinter import Toplevel, Frame, messagebox, Label, Button, StringVar, IntVar
 from Display_Manager import ThemeManager
+import Json_Handling as JH
 
-def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E_Agility, S_Agility, V_Agility, 
+
+
+def calulate(Atk_var, Enemy_var, Fire_Mode, Melee_Mode, Range_Dist, Melee_Dist, Range_Stat, Melee_Stat, E_Agility, S_Agility, V_Agility, 
              Shots, R_D_Size, R_D_Num, R_Added_Damage, R_Pierce, R_Rounds, 
              Strikes, M_D_Size, M_D_Num, M_Added_Damage, M_Pierce,
              Head, Arm, Chest, Leg, V_Armor, 
-             E_ignores, S_ignores, V_ignores, E_Tough, V_Tough, dark_mode):
+             E_ignores, S_ignores, V_ignores, E_Tough, V_Tough):
     output = Toplevel()
     output.wm_title("Output")
-    output.geometry("800x400")
+    output.geometry("800x470")
     run_cacl = True
 
     OP_Frame = Frame(output)
@@ -20,10 +23,10 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
     Agility = IntVar(value = 0)
     ignores = IntVar(value = 0)
     Total_Damage = IntVar(value = 0)
+    dice_min = 0
     outcome = []
     armor = 0
     theme = ThemeManager(OP_Frame)
-    theme.Dark_Mode = dark_mode
 
 
     if Enemy_var == "enemy":
@@ -42,13 +45,35 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
         ignores.set(value = V_ignores)
 
 
+    if Range_Dist == "Point Blank":
+        Range_Stat += 20
+    
+    elif Range_Dist == "Close":
+        Range_Stat += 10
+
+    elif Range_Dist == "Long":
+        Range_Stat -= 40
+        R_Pierce = int(R_Pierce/2)
+
+    elif Range_Dist == "Extreme":
+        Range_Stat -= 80
+        R_Pierce = 0
+
+    if Melee_Dist == "Point Blank":
+        Melee_Stat += 10
+
+    if JH.read("Preferences.json")["SpecialRules"]["DiceMinimum"]["Active"] and (Atk_var == "ranged"):
+        dice_min = JH.read("Preferences.json")["SpecialRules"]["DiceMinimum"]["Value"]
+    else:
+        dice_min = 0
+
+
     if Atk_var == "ranged":
         if R_Rounds > 0:
 
             if Fire_Mode == "auto":
                 for shot in range(0,min(Shots, R_Rounds)):
-                    final_stats = attack(0,Range_Stat,Enemy_var, Head, Arm, Leg, Chest, V_Armor,
-                        R_Added_Damage, R_D_Num, R_D_Size, toughness, R_Pierce)
+                    final_stats = attack(0, Range_Stat, Enemy_var, Atk_var, Head, Arm, Leg, Chest, V_Armor, R_Added_Damage, R_D_Num, R_D_Size, toughness, R_Pierce, dice_min)
                     outcome.append(final_stats)
                     Total_Damage.set(sum(o[2] for o in outcome))
 
@@ -70,12 +95,21 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
                     debuff = loc_tup[2]
 
                     for Shot in range(0, min(Shots, R_Rounds)):
-                        damage += R_Added_Damage
-                        for dice in range(0,R_D_Num):
-                            damage += r.randint(0,R_D_Size)
+                        if JH.read("Preferences.json")["SpecialRules"]["HardLight"]["Active"]:
+                            damage += hardlight_dmg_roll(R_Added_Damage, R_D_Num, R_D_Size, dice_min)
+
+                        else:
+                            damage += R_Added_Damage
+                            if (Enemy_var == "shield") and (JH.read("Preferences.json")["SpecialRules"]["Penetrating"]["Active"]):
+                                damage += R_Pierce *3
+                            for dice in range(0,R_D_Num):
+                                damage += r.randint(dice_min, R_D_Size)
 
                     armor = max(0, armor - R_Pierce)
-                    Final_Damage = max(0, damage - armor - toughness)
+                    if ("Head" in loc_name) and JH.read("Preferences.json")["SpecialRules"]["HeadShot"]["Active"]:
+                        Final_Damage = max(0, damage - armor)
+                    else:
+                        Final_Damage = max(0, damage - armor - toughness)
 
                 final_stats = (roll, DegressOfSuccess, Final_Damage, loc_name, debuff)
                 outcome.append(final_stats)
@@ -83,8 +117,7 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
 
             elif Fire_Mode == "semiauto":
                 for shot in range(0, min(Shots, R_Rounds)): 
-                    final_stats = attack(10,Range_Stat,Enemy_var, Head, Arm, Leg, Chest, V_Armor,
-                        R_Added_Damage, R_D_Num, R_D_Size, toughness, R_Pierce)
+                    final_stats = attack(10,Range_Stat,Enemy_var, Atk_var, Head, Arm, Leg, Chest, V_Armor, R_Added_Damage, R_D_Num, R_D_Size, toughness, R_Pierce, dice_min)
                     outcome.append(final_stats)
                     Total_Damage.set(sum(o[2] for o in outcome))
 
@@ -123,10 +156,15 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
             Total_Damage.set(sum(o[2] for o in outcome))
 
         elif Melee_Mode == "single":
-            final_stats = attack(0,Melee_Stat,Enemy_var, Head, Arm, Leg, Chest, V_Armor,
-                M_Added_Damage, M_D_Num, M_D_Size, toughness, M_Pierce)
-            outcome.append(final_stats)
-            Total_Damage.set(sum(o[2] for o in outcome))
+            if JH.read("Preferences.json")["SpecialRules"]["Assassination"]["Active"]:
+                final_stats = attack(0, Melee_Stat, Enemy_var, Atk_var, Head, Arm, Leg, Chest, V_Armor, M_Added_Damage, M_D_Num, M_D_Size, toughness, M_Pierce, dice_min = M_D_Size)
+                outcome.append(final_stats)
+                Total_Damage.set(sum(o[2] for o in outcome))
+
+            else:
+                final_stats = attack(0, Melee_Stat, Enemy_var, Atk_var, Head, Arm, Leg, Chest, V_Armor, M_Added_Damage, M_D_Num, M_D_Size, toughness, M_Pierce, dice_min)
+                outcome.append(final_stats)
+                Total_Damage.set(sum(o[2] for o in outcome))
 
 
     Agility_Var = StringVar(value = f"Agility: {Agility.get()}")
@@ -158,8 +196,7 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
 
         result_label = Label(OP_Frame, textvariable=result_var, font = theme.Text_Font_Size, wraplength = theme.Text_WrapLength * 2).grid(row = index, column = 6, pady = theme.Text_PadY_Size)  
 
-    theme.change_theme()
-
+    theme.change_theme(output)
     if not run_cacl:
         for widget in output.winfo_children():    
             widget.destroy()
@@ -169,18 +206,14 @@ def calulate(Atk_var, Enemy_var,Fire_Mode, Melee_Mode, Range_Stat, Melee_Stat, E
 def avoid_damage(Agility, DegreeOfSuccess, Debuff_Immunity, Damage, Total_Damage):
     roll = percentile_roll()
     response = ""
+    DegOF = (Agility.get() - roll) // 10
 
-
-    if roll <= Agility.get():
-        DegOF = (Agility.get() - roll) // 10
-    else:
-        DegOF = 0
 
     if DegOF > DegreeOfSuccess:
-        response +="Success. "
+        response += f"Success. {DegOF} Degrees. "
         Total_Damage.set(Total_Damage.get() - Damage)
     else:
-        response +="Fail. "
+        response += f"Fail. {DegOF} Degrees. "
 
     if Debuff_Immunity.get() > 0:
         Debuff_Immunity.set(Debuff_Immunity.get() - 1)
@@ -695,7 +728,7 @@ def location_roll(Enemy_Var,roll, Head, Arm, Leg, Chest, V_Armor):
 
     return (armor, loc_name, debuff)
 
-def attack(Type_Bonus, Range_Stat, Enemy_var, Head, Arm, Leg, Chest, V_Armor, R_Added_Damage, R_D_Num, R_D_Size, toughness, R_Pierce):
+def attack(Type_Bonus, Range_Stat, Enemy_var, Attack_Var, Head, Arm, Leg, Chest, V_Armor, R_Added_Damage, R_D_Num, R_D_Size, toughness, R_Pierce, dice_min):
     roll = percentile_roll()
     Range_Stat += Type_Bonus
     DegressOfSuccess = 0
@@ -712,110 +745,45 @@ def attack(Type_Bonus, Range_Stat, Enemy_var, Head, Arm, Leg, Chest, V_Armor, R_
         debuff = loc_tup[2]
 
         damage = R_Added_Damage
+        if (Enemy_var == "shield") and (JH.read("Preferences.json")["SpecialRules"]["Penetrating"]["Active"]):
+            damage += R_Pierce * 3
+
         for dice in range(0,R_D_Num):
-            damage += r.randint(0,R_D_Size)
+            if roll == 1:
+                if JH.read("Preferences.json")["SpecialRules"]["HardLight"]["Active"]:
+                    damage += R_D_Size + hardlight_dmg_roll(R_Added_Damage, R_D_Size, dice_min)
+
+                else:
+                    damage += R_D_Size
+
+            else:
+                if JH.read("Preferences.json")["SpecialRules"]["HardLight"]["Active"]:
+                    damage += hardlight_dmg_roll(R_Added_Damage, R_D_Size, dice_min)
+
+                else:
+                    damage += r.randint(dice_min,R_D_Size)
 
         armor = max(0, armor - R_Pierce)
-        Final_Damage = max(0, damage - armor - toughness)
+        if ("Head" in loc_name) and JH.read("Preferences.json")["SpecialRules"]["HeadShot"]["Active"]:
+            Final_Damage = max(0, damage - armor)
+        else:
+            Final_Damage = max(0, damage - armor - toughness)
+
+        if JH.read("Preferences.json")["SpecialRules"]["Assassination"]["Active"] and (Attack_Var == "melee"):
+            Final_Damage = Final_Damage * 4
+        else:
+            Final_Damage = Final_Damage
 
     final_stats = (roll, DegressOfSuccess, Final_Damage, loc_name, debuff)
     return final_stats
 
-def instructions(dark_mode):
-    instruct = Toplevel()
-    instruct.wm_title("Instructions")
-
-    IN_Frame = Frame(instruct)
-    IN_Frame.grid(row=0, column=0, sticky="nsew")
-    instruct.rowconfigure(0, weight=1)
-    instruct.columnconfigure(0, weight=1)
-    instruct.columnconfigure(1, weight=1)
-    instruct.columnconfigure(2, weight=1)
-
-    theme = ThemeManager(IN_Frame)
-    theme.Dark_Mode = dark_mode
-    Title_Small, SubTitle_Small, Text_Small = theme.make_scaled_fonts(scale=0.8)
-    Wrap_Scalar = 6
-
-
-    Instruct_L = Label(IN_Frame, text = "Instructions", font = Title_Small).grid(row = 0, column = 0, columnspan = 3, pady = theme.Title_PadY_Size, sticky = "")
-
-
-    Your_L = Label(IN_Frame, text = "Your Stats", font = Title_Small).grid(row = 1, column = 0, pady = theme.Title_PadY_Size)
-
-
-    Range_L = Label(IN_Frame, text = "Ranged", font = SubTitle_Small).grid(row = 2, column = 0, pady = theme.SubTitle_PadY_Size)
-
-
-    R_Fire_L = Label(IN_Frame, text = "Auto Fire, Burst Fire, Semi Auto Fire: Choose what fire type you intend to use", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 3, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    R_Warfare_L = Label(IN_Frame, text = "Ranged Warfare: Insert your ranged warframe stat without the buff from the fire type", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 4, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    R_Shot_Num_L = Label(IN_Frame, text = "Number of Shots: Insert the number of shots you weapon will fire for the respective fire type", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 5, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    R_Dice_Num_L = Label(IN_Frame, text = "Number of Dice: Insert the number of damage dice for one shot", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 6, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    R_Dice_Size_L = Label(IN_Frame, text = "Size of Dice: Insert the number of sides for you damage dice", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 7, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    R_AddD_L = Label(IN_Frame, text = "Added Damage: Insert the flat damage increase for one shot", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 8, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    R_Pierce_L = Label(IN_Frame, text = "Pierce: Insert the pierce value for the gun", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 9, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-    
-    R_Rounds_L = Label(IN_Frame, text = "Rounds in Weapon: Insert the number of rounds in you gun, this will go down as you shoot and will not let you shoot if it is at zero", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 10, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-
-    Melee_L = Label(IN_Frame, text = "Melee", font = SubTitle_Small).grid(row = 11, column = 0, pady = theme.SubTitle_PadY_Size)
-
-    M_Strike_L = Label(IN_Frame, text = "Single Strike, Burst Strike: Choose what Strike type you intend to use", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 12, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    M_Warfare_L = Label(IN_Frame, text = "Melee Warfare: Insert your melee warframe stat", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 13, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    M_Count_L = Label(IN_Frame, text = "Melee Strikes: (Only chaneg if on \"Burst Melee\") Inster number of strikes you will make", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 14, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    M_Dice_Num_L = Label(IN_Frame, text = "Number of Dice: Insert the number of damage dice for one melee attack", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 15, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    M_Dice_Size_L = Label(IN_Frame, text = "Size of Dice: Insert the number of sides for you damage dice", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 16, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    M_AddD_L = Label(IN_Frame, text = "Added Damage: Insert the flat damage increase for one melee attack", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 17, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    M_Pierce_L = Label(IN_Frame, text = "Pierce: Insert the pierce value for the gun", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 18, column = 0, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-
-
-    Enemy_L = Label(IN_Frame, text = "Enemy Stats", font = Title_Small).grid(row = 1, column = 2, pady = theme.Title_PadY_Size)
-
-    Ene_L = Label(IN_Frame, text = "Enemy", font = SubTitle_Small).grid(row = 2, column = 2, pady = theme.SubTitle_PadY_Size)
-
-    E_Head_L = Label(IN_Frame, text = "Head Armor: Input the armor value for the enemies head", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 3, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    E_Arm_L = Label(IN_Frame, text = "Arm Armor: Input the armor value for the enemies arm", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 4, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    E_Chest_L = Label(IN_Frame, text = "Chest Armor: Input the armor value for the enemies chest", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 5, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    E_Leg_L = Label(IN_Frame, text = "Leg Armor: Input the armor value for the enemies leg", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 6, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    E_Agility_L = Label(IN_Frame, text = "Agility: Input the enemies Agility value", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 7, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    E_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the enemy can negate the Agility debuff from dodging or parrying", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 8, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-    
-    E_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the enemies toughness modifier", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 9, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-
-    Shield_L = Label(IN_Frame, text = "Shield", font = SubTitle_Small).grid(row = 10, column = 2, pady = theme.SubTitle_PadY_Size)
-
-    S_Agility_L = Label(IN_Frame, text = "Agility: Input the enemies Agility value", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 11, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    S_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the enemy can negate the Agility debuff from dodging or parrying", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 12, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-    
-
-    Vehicle_L = Label(IN_Frame, text = "Vehicle", font = SubTitle_Small).grid(row = 13, column = 2, pady = theme.SubTitle_PadY_Size)
-
-    V_Armor_L = Label(IN_Frame, text = "Armor: Input the armor value for the target area of the vehicle", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 14, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    V_Manuverability_L = Label(IN_Frame, text = "Manuverability: Input the vehicles Manuverability value", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 15, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    V_Debuff_Invuln_L = Label(IN_Frame, text = "Debuff Invunerability Charges: Input the number of times the vehicle can negate the Agility debuff from dodging or parrying", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 16, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    V_Tough_Mod_L = Label(IN_Frame, text = "Toughness Modifier: Input the vehicles toughness modifier", font = Text_Small, wraplength = theme.Text_WrapLength * Wrap_Scalar, justify = "left").grid(row = 17, column = 2, pady = theme.Text_PadY_Size, padx = theme.Text_PadX_Size, sticky = "w")
-
-    theme.change_theme()
+def hardlight_dmg_roll(R_Added_Damage, R_D_Size, dice_min):
+    damage = R_Added_Damage
+    index = 0
+    while index < 1:
+        add_dmg = r.randint(dice_min, R_D_Size)
+        index += 1
+        if add_dmg == R_D_Size:
+            index -= 1
+        damage += add_dmg
+    return damage

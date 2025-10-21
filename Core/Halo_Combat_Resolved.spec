@@ -5,7 +5,7 @@ a = Analysis(
     ['Interface.py'],
     pathex=[],
     binaries=[],
-    datas=[('../Fonts/Halo.ttf', 'Fonts')],
+    datas=[('../Fonts/Halo.ttf', 'Fonts'), ('C:\\Users\\Sebas\\AppData\\Roaming\\Python\\Python313\\site-packages\\tkextrafont', 'tkextrafont')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

@@ -1,0 +1,28 @@
+{
+	"Settings": {
+		"DarkMode": true,
+		"ToolTips": true
+	},
+	"SpecialRules": {
+		"Penetrating": {
+			"Active": false,
+			"Value": 0
+		},
+		"DiceMinimum": {
+			"Active": false,
+			"Value": 0
+		},
+		"HardLight": {
+			"Active": false,
+			"Value": 0
+		},
+		"HeadShot": {
+			"Active": false,
+			"Value": 0
+		},
+		"Assassination": {
+			"Active": false,
+			"Value": 0
+		}
+	}
+}

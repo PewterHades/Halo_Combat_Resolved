@@ -4,7 +4,7 @@ All noteable changes to this project will be documented in this file
 
 ## Unreleased
 - Features dealing with saving preset weapons or enemies for quickloading their stats (This will take a while becasue it has to deal with incoperation into my larger project)
-- Mac compatability
+- Mac compatability (Should be working but i need to test on a Virtual machine, but it is currently not working)
 - Pump fire mode
 
 ## [1.0.0] 9/12/25
@@ -91,8 +91,19 @@ Version number note: Since the previous 1.x version were not public I see them a
 
 ## [1.1.0] in progress
 ### Additions
+- Weapon optional rules (eg. Headshot, Hardlight, Assassination)
+- Range slider for range and melee
+- Tooltips for every parameter
+- Minor Json compatability to save Dark mode, Tooltip, and optional rule preferences in between uses
+- Settings page to toggle Dark Mode and Tooltips
 
 ### Changes
+- Changed Dark Mode so it changes every active window and does not require you to reopen a window to change the theme
+- Moved to Instructions page into the tooltips
+- Now shows degress for each evastion roll so luck can be taken into acount
+- Filled entries or selected buttons now show up as green to improve visibility
 
 ### Fixes
 - More spelling errors
+- Font Import
+- Apple Compatability
