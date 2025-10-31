@@ -3,15 +3,16 @@
 This program was made to make combat in the "Halo Mythic" TTRPG more streamlined.
 
 ## Features
-- Ability to easily input weapon and enemy values 
+- Ability to easily input weapon and enemy values
 - The program does all of the calcualtions itself and gives relevant information like the roll, hit location, damage, debuffs
 - Allows for the enemy to dodge each individual shot and will reduce thier Agility respectivly
-- Takes into account the fire type you are using and if you are using a gun or melee
-- Has different variables if you are attacking an enemy, an enemie's shields, or a vehicle
+- Takes into account the fire type you are using, the distance from the tarket, and if you are using a gun or melee
+- Has different inputs if you are attacking an enemy, an enemie's shields, or a vehicle
+- Allows for the use of certain specail weapon traits like penetration or hardlight
 - Follows the rules from the Mythic 7.0 Rules book
 
 ## Installation
-This project is distributed as a .exe file and a zip file containing all of the code for the purpose of being open source. bundling all required dependencies (`sys`, `os`, `ctypes`, `random`, `tkinter`). No Python installation is needed.
+This project is distributed as a .exe file and a zip file containing all of the code for the purpose of being open source. bundling all required dependencies (`json`, `random`, `tkinter`, `tkextrafont`). No Python or dependancy installation is needed to run normaly.
 
 ### Steps to intsall and run
 #### From itch.io

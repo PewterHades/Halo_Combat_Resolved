@@ -1,7 +1,8 @@
 {
 	"Settings": {
-		"DarkMode": true,
-		"ToolTips": true
+		"DarkMode": false,
+		"ToolTips": true,
+		"ResetEntriesOnOpen": true
 	},
 	"SpecialRules": {
 		"Penetrating": {

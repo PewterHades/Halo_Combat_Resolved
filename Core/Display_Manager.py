@@ -1,8 +1,8 @@
-import sys
-from os.path import join, abspath
 from tkinter import Label, Button, Entry, Radiobutton, Scale, Toplevel, Tk
+from tkinter.ttk import Combobox
 from tkextrafont import Font
 import Json_Handling as JH
+import Json_Maps as JM
 
 class ThemeManager:
     def __init__(self, root):
@@ -30,38 +30,6 @@ class ThemeManager:
             "Dark":{"bg": '#333333', "fg": '#FFFFFF', "entry_bg": '#333333'}}
         self.green = "#879250"
 
-
-    def get_all_children(self, widget):
-        children = widget.winfo_children()
-        for child in children:
-            children.extend(self.get_all_children(child))
-        return children
-
-    def get_all_toplevels(self, root):
-        toplevels = [root]
-        children = root.tk.call('winfo', 'children', '.')
-        for child_path in children:
-            if "toplevel" in child_path.lower():
-                toplevels.append(root.nametowidget(child_path))
-        return toplevels
-
-    def update_paddings(self):
-        for widget in self.get_all_children(self.root):
-            try:
-                info = widget.grid_info()
-                if info:
-                    font = widget.cget("font")
-                    if font == str(self.Title_Font_Size):
-                        pady = self.Title_PadY_Size
-                    elif font == str(self.SubTitle_Font_Size):
-                        pady = self.SubTitle_PadY_Size
-                    elif font == str(self.Text_Font_Size):
-                        pady = self.Text_PadY_Size
-                    else:
-                        continue
-                    widget.grid_configure(pady=pady)
-            except:
-                pass
 
     def on_resize(self, event):
         if self.after_id:
@@ -101,7 +69,31 @@ class ThemeManager:
             subtitle.configure(size=int(self.SubTitle_Font_Size['size'] * scale))
             text.configure(size=int(self.Text_Font_Size['size'] * scale))
 
-        self.update_paddings()
+
+        def update_paddings():
+            def get_all_children(widget):
+                children = widget.winfo_children()
+                for child in children:
+                    children.extend(get_all_children(child))
+                return children
+
+            for widget in get_all_children(self.root):
+                try:
+                    info = widget.grid_info()
+                    if info:
+                        font = widget.cget("font")
+                        if font == str(self.Title_Font_Size):
+                            pady = self.Title_PadY_Size
+                        elif font == str(self.SubTitle_Font_Size):
+                            pady = self.SubTitle_PadY_Size
+                        elif font == str(self.Text_Font_Size):
+                            pady = self.Text_PadY_Size
+                        else:
+                            continue
+                        widget.grid_configure(pady=pady)
+                except:
+                    pass
+        update_paddings()
 
     def make_scaled_fonts(self, scale=0.75):
         title = self.Title_Font_Size.copy()
@@ -113,14 +105,16 @@ class ThemeManager:
         return title, subtitle, text
 
     def change_theme(self, window):
-        theme = self.modes["Dark" if JH.read("Preferences.json")["Settings"]["DarkMode"] else "Light"]
+        theme = self.modes["Dark" if JH.get_json_val("Preferences.json", JM.Prefernce_map, "darkmode") else "Light"]
 
         def theme_recursion(widget, theme):
             widget.config(bg = theme["bg"])
             for child in widget.winfo_children():
                 if isinstance(child, (Label, Radiobutton, Scale)):
                     child.config(bg = theme["bg"], fg = theme["fg"])
-                elif isinstance(child, (Entry, Button)):
+                elif isinstance(child, (Entry, Button)) and not isinstance(child, Combobox):
+                    if isinstance(child, Entry) and (child.get().strip() != 0):
+                        child.config(bg = theme["entry_bg"], fg = theme["fg"])
                     if child.cget("bg") == "#879250":
                         child.config(fg = theme["fg"])
                     else:
@@ -137,14 +131,33 @@ class ThemeManager:
             data["Settings"]["DarkMode"] = not data["Settings"]["DarkMode"]
             JH.save("Preferences.json", data)
 
-        for window in self.get_all_toplevels(root):
-            self.change_theme(window) 
 
-    def resource_path(self, relative_path):
-        if hasattr(sys, '_MEIPASS'):
-            return join(sys._MEIPASS, relative_path)
-        return join(abspath("."), relative_path)
-    
+        def get_all_toplevels(root):
+            toplevels = [root]
+            children = root.tk.call('winfo', 'children', '.')
+            for child_path in children:
+                if "toplevel" in child_path.lower():
+                    toplevels.append(root.nametowidget(child_path))
+            return toplevels
+
+
+        for window in get_all_toplevels(root):
+            self.change_theme(window) 
+ 
+    def bool_update_label(self,file_name,label_map):
+        data = JH.read(file_name)
+
+        for key_list, label in label_map.items():
+            keys = key_list.split(",")
+            cur = data
+            for key in keys[:-1]:
+                cur = cur[key]
+                    
+            last_key = keys[-1]
+            value = cur[last_key]
+                    
+            label.config(text="Active" if value else "Not Active")
+
 class ToolTip(object):
     def __init__(self, widget):
         self.widget = widget
@@ -158,7 +171,7 @@ class ToolTip(object):
     def showtip(self, text):
         self.text = text
 
-        if self.tipwindow or not self.text or not JH.read("Preferences.json")["Settings"]["ToolTips"]:
+        if self.tipwindow or not self.text or not JH.get_json_val("Preferences.json", JM.Prefernce_map, "tooltip"):
             return
         
         x, y, cx, cy = self.widget.bbox("insert")

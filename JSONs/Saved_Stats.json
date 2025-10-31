@@ -1,0 +1,47 @@
+{
+	"YourStats": {
+		"Ranged": {
+			"RangedWarfare": 0,
+			"NumberOfShots": 0,
+			"NumberOfDice": 0,
+			"SizeOfDice": 0,
+			"AddedDamage": 0,
+			"Pierce": 0,
+			"RoundsInWeapon": 0
+		},
+		"Melee": {
+			"MeleeWarfare": 0,
+			"MeleeStrikes": 0,
+			"NumberOfDice": 0,
+			"SizeOfDice": 0,
+			"AddedDamage": 0,
+			"Pierce": 0
+		},
+		"VehicleHitLocation": "Back"
+	},
+	"EnemyStats": {
+		"Enemy": {
+			"Armor": {
+				"Head": 0,
+				"Arm": 0,
+				"Chest": 0,
+				"Leg": 0
+			},
+			"Agility": 0,
+			"AgilityDebuffInvunerability": 0,
+			"ToughnessModifier": 0
+		},
+		"Vehicle": {
+			"Armor": {
+				"Front": 0,
+				"Back": 0,
+				"Side": 0,
+				"Top": 0,
+				"Bottom": 0
+			},
+			"Manuverability": 0,
+			"ManuverabilityDebuffInvunerability": 0,
+			"ToughnessModifier": 0
+		}
+	}
+}

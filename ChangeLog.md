@@ -2,10 +2,14 @@ All noteable changes to this project will be documented in this file
 
 
 
-## Unreleased
+## Planned Additions
 - Features dealing with saving preset weapons or enemies for quickloading their stats (This will take a while becasue it has to deal with incoperation into my larger project)
 - Mac compatability (Should be working but i need to test on a Virtual machine, but it is currently not working)
 - Pump fire mode
+
+## Known Problems
+- multiple instances of the settings and specail rules pages can exist at once 
+
 
 ## [1.0.0] 9/12/25
 
@@ -89,7 +93,7 @@ Version number note: Since the previous 1.x version were not public I see them a
 - Fixed spelling mistakes in various parts of the project
 
 
-## [1.1.0] in progress
+## [1.1.0]
 ### Additions
 - Weapon optional rules (eg. Headshot, Hardlight, Assassination)
 - Range slider for range and melee
@@ -107,3 +111,14 @@ Version number note: Since the previous 1.x version were not public I see them a
 - More spelling errors
 - Font Import
 - Apple Compatability
+
+## [1.1.1]
+### Additions
+- Current values now get saved in between closing and opening the program. This is a toggle in the settings
+- Preperation for being able to load preset enemy and weapon values
+
+### Changes
+- Background code logic to be better compatible for future additions
+- A lot of code optimization fro when dealing with json files
+
+### Fixes
