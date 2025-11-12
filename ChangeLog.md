@@ -4,7 +4,6 @@ All noteable changes to this project will be documented in this file
 
 ## Planned Additions
 - Features dealing with saving preset weapons or enemies for quickloading their stats (This will take a while becasue it has to deal with incoperation into my larger project)
-- Mac compatability (Should be working but i need to test on a Virtual machine, but it is currently not working)
 - Pump fire mode
 
 ## Known Problems
@@ -119,6 +118,16 @@ Version number note: Since the previous 1.x version were not public I see them a
 
 ### Changes
 - Background code logic to be better compatible for future additions
-- A lot of code optimization fro when dealing with json files
+- A lot of code optimization for when dealing with json files
 
 ### Fixes
+
+## [1.1.2]
+### Additions
+- Application icon
+
+## Changes
+- Ending my attemps of getting this to work on Mac, Sorry
+
+## Fixes
+- Should now work when only installing the exe file

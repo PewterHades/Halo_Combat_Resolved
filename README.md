@@ -12,7 +12,7 @@ This program was made to make combat in the "Halo Mythic" TTRPG more streamlined
 - Follows the rules from the Mythic 7.0 Rules book
 
 ## Installation
-This project is distributed as a .exe file and a zip file containing all of the code for the purpose of being open source. bundling all required dependencies (`json`, `random`, `tkinter`, `tkextrafont`). No Python or dependancy installation is needed to run normaly.
+This project is distributed as a .exe file and a zip file containing all of the code for the purpose of being open source. bundling all required dependencies (`json`, `random`, `tkinter`, `os`). No Python or dependancy installation is needed to run normaly.
 
 ### Steps to intsall and run
 #### From itch.io

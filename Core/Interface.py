@@ -1,10 +1,10 @@
 from tkinter import Tk, Frame, Widget, Toplevel, Label, Entry, Radiobutton, Button, Scale, StringVar, IntVar, END
 from tkinter.ttk import Combobox
-from tkextrafont import Font
 from Functions import calulate
 from Display_Manager import ThemeManager, create_tooltip
 import Json_Handling as JH
 import Json_Maps as JM
+
 
 
 class Main_Page(Frame):
@@ -539,10 +539,6 @@ root.geometry("1008x567")
 root.bind_all("<Button-1>", lambda event: event.widget.focus_set() if isinstance(event.widget, Widget) and event.widget.winfo_class() != 'TCombobox' else None)
 
 
-
-halo_font = Font(file = "Fonts/Halo.ttf")
-assert halo_font.is_font_available('Halo')
-assert 'Halo' in halo_font.loaded_fonts()
 
 if JH.get_json_val("Preferences.json", JM.Prefernce_map, "resetentries"):
     JH.reset_vals("Saved_Stats.json")

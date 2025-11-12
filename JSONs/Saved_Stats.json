@@ -17,7 +17,7 @@
 			"AddedDamage": 0,
 			"Pierce": 0
 		},
-		"VehicleHitLocation": "Back"
+		"VehicleHitLocation": "Front"
 	},
 	"EnemyStats": {
 		"Enemy": {

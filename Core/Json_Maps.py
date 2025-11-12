@@ -1,5 +1,7 @@
 import Json_Handling as JH
 
+
+
 Entry_map = {"rangedwarfare": "YourStats,Ranged,RangedWarfare",
              "rangednumberofshots": "YourStats,Ranged,NumberOfShots",
              "rangednumberofdice": "YourStats,Ranged,NumberOfDice",

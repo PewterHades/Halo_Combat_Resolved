@@ -1,11 +1,23 @@
 from json import load, dump
+import File_Dicrector as FD
+
+
+
 def read(file_name):
-    with open(f"JSONs/{file_name}", "r") as f:
+    directory = FD.create_diretory(["JSONs",file_name])
+    if "\\\\" in directory:
+        directory = directory.replace("\\\\", "\\")
+        
+    with open(directory, "r") as f:
         data  = load(f)
     return data
 
 def save(file_name, data):
-    with open(f"JSONs/{file_name}", "w") as f:
+    directory = FD.create_diretory(["JSONs",file_name])
+    if "\\\\" in directory:
+        directory = directory.replace("\\\\", "\\")
+
+    with open(directory, "w") as f:
         dump(data, f, indent = "\t")
 
 def reset_vals(file_name):

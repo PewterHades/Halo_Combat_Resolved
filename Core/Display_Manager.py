@@ -1,8 +1,19 @@
+from ctypes import windll, byref, create_unicode_buffer
 from tkinter import Label, Button, Entry, Radiobutton, Scale, Toplevel, Tk
 from tkinter.ttk import Combobox
-from tkextrafont import Font
+from tkinter.font import Font
 import Json_Handling as JH
 import Json_Maps as JM
+import File_Dicrector as FD
+
+
+
+FR_PRIVATE = 0x10
+FR_NOT_ENUM = 0x20
+flags = FR_PRIVATE | FR_NOT_ENUM
+directory = FD.create_diretory(["Fonts","Halo.ttf"])
+pathbuf = create_unicode_buffer(directory)
+windll.gdi32.AddFontResourceExW(byref(pathbuf), flags)
 
 class ThemeManager:
     def __init__(self, root):
